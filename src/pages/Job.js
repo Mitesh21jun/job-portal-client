@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchJobDetails } from "../api/axios";
+import { fetchJobDetails, matchJobToCandidates } from "../api/axios";
 
 export default function Job() {
   const { id } = useParams();
   const [job, setJob] = useState(null);
   const [error, setError] = useState(null);
+  const [candidates, setCandidates] = useState([]);
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -18,6 +19,18 @@ export default function Job() {
       }
     };
     fetchJob();
+  }, [id]);
+
+  useEffect(() => {
+    const fetchCandidates = async () => {
+      try {
+        const res = await matchJobToCandidates(id);
+        setCandidates(res.data);
+      } catch (err) {
+        console.error("Failed to load matched candidates.", err);
+      }
+    };
+    fetchCandidates();
   }, [id]);
 
   if (error) return <div className="text-red-500">{error}</div>;
@@ -44,7 +57,35 @@ export default function Job() {
       <div className="mb-2">
         <strong>Contact:</strong> {job.contact || "N/A"}
       </div>
-      
+
+      <div className="mt-8">
+        <h3 className="text-2xl font-bold mb-4">Matched Candidates</h3>
+        {candidates.length > 0 ? (
+          <ul className="space-y-4">
+            {candidates.map((candidate) => (
+              <li key={candidate._id} className="border p-4 rounded-lg">
+                <h4 className="font-bold">{candidate.name}</h4>
+                <p>
+                  <span className="font-bold">Email</span>: {candidate.email}
+                </p>
+                <p>
+                  <span className="font-bold">Phone</span>: {candidate.phone}
+                </p>
+                <p>
+                  <span className="font-bold">Skills</span>:{" "}
+                  {candidate.skills.join(", ")}
+                </p>
+                <p>
+                  <span className="font-bold">Resume</span>:{" "}
+                  {candidate.resumeText}
+                </p>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>No matched candidates found.</p>
+        )}
+      </div>
     </div>
   );
 }

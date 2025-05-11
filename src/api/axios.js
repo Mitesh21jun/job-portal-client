@@ -33,6 +33,10 @@ export const fetchJobDetails = async (id) => {
   return instance.get(`/job/${id}`);
 };
 
+export const matchJobToCandidates = async (jobId) => {
+  return instance.get(`/match/job-to-candidates/${jobId}`);
+};
+
 export const fetchProfile = async (userId) => {
   return instance.get(`/candidate/${userId}`);
 };
