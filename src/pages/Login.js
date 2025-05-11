@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "../api/axios";
+import { login } from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -9,17 +9,24 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/auth/login", form);
+      const res = await login(form);
       localStorage.setItem("token", res.data.token);
       localStorage.setItem("userId", res.data._id);
       localStorage.setItem("userEmail", res.data.email);
       localStorage.setItem("userRole", res.data.role);
-
       navigate("/dashboard");
-    //   alert("Login successful");
     } catch (err) {
       console.error(err);
-      alert("Login failed");
+
+      if (err.response && err.response.status === 404) {
+        alert("User not found");
+        return;
+      }
+      if (err.response && err.response.status === 500) {
+        alert("Server error");
+        return;
+      }
+      alert("Login failed :" + err.message);
     }
   };
 

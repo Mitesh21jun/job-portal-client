@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "../api/axios";
+import { postJob } from "../api/axios";
 
 export default function PostJob() {
   const [form, setForm] = useState({ title: "", description: "", requirements: "" });
@@ -7,10 +7,7 @@ export default function PostJob() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
-      await axios.post("/job", form, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await postJob(form);
       alert("Job posted successfully");
     } catch (err) {
       console.error(err);

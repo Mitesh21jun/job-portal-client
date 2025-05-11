@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "../api/axios";
+import { fetchJobDetails } from "../api/axios";
 
 export default function Job() {
   const { id } = useParams();
   const [job, setJob] = useState(null);
   const [error, setError] = useState(null);
-  const token = localStorage.getItem("token");
 
   useEffect(() => {
     const fetchJob = async () => {
       try {
-        const res = await axios.get(`/job/${id}` ,{
-        headers: { Authorization: `Bearer ${token}` },
-      });
+        const res = await fetchJobDetails(id);
         setJob(res.data);
       } catch (err) {
         console.error(err);

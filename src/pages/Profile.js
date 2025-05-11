@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "../api/axios";
+import { fetchProfile, postProfile, getUserId } from "../api/axios";
 
 export default function Profile() {
   const [formData, setFormData] = useState({
@@ -11,24 +11,18 @@ export default function Profile() {
   });
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState(null);
-  const token = localStorage.getItem("token");
-  const userId = localStorage.getItem("userId");
+  const userId = getUserId();
 
   useEffect(() => {
-    const fetchProfile = async () => {
+    const fetchProfileData = async () => {
       try {
-        const res = await axios.get(`/candidate/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = res.data;
+        const res = await fetchProfile(userId);
         setFormData({
-          name: data.name || "",
-          email: data.email || "",
-          phone: data.phone || "",
-          skills: (data.skills || []).join(", "),
-          resumeText: data.resumeText || "",
+          name: res.data.name || "",
+          email: res.data.email || "",
+          phone: res.data.phone || "",
+          skills: (res.data.skills || []).join(", "),
+          resumeText: res.data.resumeText || "",
         });
       } catch (err) {
         if ((err.status) === 404) {
@@ -42,8 +36,8 @@ export default function Profile() {
         setLoading(false);
       }
     };
-    fetchProfile();
-  }, [token]);
+    fetchProfileData();
+  }, []);
 
   const handleChange = (e) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -56,9 +50,7 @@ export default function Profile() {
         ...formData,
         skills: formData.skills.split(",").map((s) => s.trim()),
       };
-      await axios.post("/candidate/profile", payload, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await postProfile(payload);
       setMessage("Profile updated successfully.");
     } catch (err) {
       console.error(err);
