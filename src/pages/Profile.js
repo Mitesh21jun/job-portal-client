@@ -26,7 +26,7 @@ export default function Profile() {
         });
       } catch (err) {
         if ((err.status) === 404) {
-          setMessage("Please create your candidate profile from here");
+          setMessage("Please update your profile first");
           return;
         }
         console.log(err.status)

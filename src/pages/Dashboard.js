@@ -1,15 +1,16 @@
 import { useState, useEffect } from "react";
-import axios, { fetchJobs } from "../api/axios";
+import axios, { fetchJobs as fetchJobsApi } from "../api/axios";
 import { useNavigate } from "react-router-dom";
 
 export default function Dashboard() {
   const [jobs, setJobs] = useState([]);
   const [matches, setMatches] = useState([]);
+  const [loading, setLoading] = useState(true);
   const userId = localStorage.getItem("userId");
   const navigate = useNavigate();
   const fetchJobs = async () => {
     try {
-      const res = await fetchJobs(userId);
+      const res = await fetchJobsApi(userId);
       setJobs(res.data);
     } catch (err) {
       console.error("Error fetching jobs", err);
@@ -32,12 +33,24 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    fetchJobs();
-    fetchMatches();
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        await fetchJobs();
+        await fetchMatches();
+      } catch (err) {
+        console.error("Error fetching data", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
   }, []);
 
+  if (loading) return <div>Loading...</div>;
+
   const handleJobClick = (jobId) => {
-    window.location.href = `/job/${jobId}`;
+    navigate(`/job/${jobId}`);
   };
 
   return (
