@@ -10,12 +10,12 @@ export default function Home() {
 
       <div className="space-y-4">
         <Link to="/login">
-          <button className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700">
+          <button className="bg-blue-600 mx-2 text-white px-6 py-2 rounded-md hover:bg-blue-700">
             Log In
           </button>
         </Link>
         <Link to="/signup">
-          <button className="bg-green-600 text-white px-6 py-2 rounded-md hover:bg-green-700">
+          <button className="bg-green-600 mx-2 text-white px-6 py-2 rounded-md hover:bg-green-700">
             Sign Up
           </button>
         </Link>
@@ -25,9 +25,9 @@ export default function Home() {
         <h2 className="text-xl font-semibold text-gray-700">How It Works</h2>
         <ul className="list-disc text-left space-y-2 mt-4 max-w-md mx-auto text-gray-600">
           <li>Create an account as a candidate or employer.</li>
-          <li>Candidates create a profile with their skills and experience.</li>
+          <li>Create a profile with skills and experience.</li>
           <li>Employers post job openings with job requirements.</li>
-          <li>AI matches candidates to the right jobs based on skills and job descriptions.</li>
+          <li>Platform matches candidates to the right jobs based on skills and job descriptions.</li>
         </ul>
       </div>
     </div>
