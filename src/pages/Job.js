@@ -44,6 +44,9 @@ export default function Job() {
           ))}
         </ul>
       </div>
+      <div className="mb-2">
+        <strong>Contact:</strong> {job.contact || "N/A"}
+      </div>
       
     </div>
   );

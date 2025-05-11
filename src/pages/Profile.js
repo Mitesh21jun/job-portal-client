@@ -31,6 +31,11 @@ export default function Profile() {
           resumeText: data.resumeText || "",
         });
       } catch (err) {
+        if ((err.status) === 404) {
+          setMessage("Please create your candidate profile from here");
+          return;
+        }
+        console.log(err.status)
         console.error(err);
         setMessage("Failed to load profile");
       } finally {

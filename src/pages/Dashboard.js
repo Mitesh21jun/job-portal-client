@@ -57,7 +57,7 @@ return (
                         <h4 className="font-bold">{job.title}</h4>
                         <p>{job.description}</p>
                         <p>
-                            <span className="font-semibold">Requirements:</span>{" "}
+                            <span className="font-semibold">Required Skills:</span>{" "}
                             {job.requirements}
                         </p>
                     </div>
@@ -77,7 +77,7 @@ return (
                         <h4 className="font-bold">{match?.jobTitle}</h4>
                         <p>{match?.description}</p>
                         <p>
-                            <span className="font-semibold">Requirements:</span>{" "}
+                            <span className="font-semibold">Required Skills:</span>{" "}
                             {match?.requirements?.join(", ")}
                         </p>
                         <p>
